@@ -4,6 +4,7 @@ A number-guessing game.
 
 */
 import java.util.Scanner;
+import java.util.InputMismatchException;
 import java.util.Random;
 
 public class Game {
@@ -21,12 +22,43 @@ public class Game {
     int number = rand.nextInt(100);
 
     //User inputs number
-    int user_input = input.nextInt();
-    System.out.println("Here is your number: " + user_input + " Here is the random number: " + number);
+    int count = 0;
+
+    //Start loop for guessing game
+    while (true) {
+      int user_input;
+
+      try {
+        user_input = input.nextInt();
+        input.nextLine();
+
+      } catch (InputMismatchException e) {
+          String bad_input = input.next();
+          System.out.println(bad_input + " is not an integer, try again.");
+          continue;
+      } 
 
 
-    input.close();
+      if (user_input < number) {
+        count = count + 1;
+        if (user_input < 1 | user_input > 100){
+          System.out.println("Your guess must be between 1-100");
+        }
+        System.out.println("Your guess is too low, try again");
 
+      } else if (user_input > number) {
+          count = count + 1;
+          if (user_input < 1 | user_input > 100){
+            System.out.println("Your guess must be between 1-100");
+          }
+          System.out.println("Your guess is too high, try again");
+        
+      } else if (user_input == number) {
+          count = count + 1;
+          System.out.println("Congratulations! The number was " + number + " and it took you only " + count + " tries!");
+          break;
+      }
+    }
   }
 
 }
